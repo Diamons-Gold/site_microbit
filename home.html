@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<head>
+    <title>Microbit</title>
+    <script type="text/javascript" src="script.js"></script>
+    <link href="style.css" rel="stylesheet">
+    <link href="img/logo_microbit.png" rel="icon">
+    <meta charset="UTF-8">
+
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.0.0/build/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</head>
+<body>
+    <section id="grid">
+        <section id="project" onclick="select('project')">
+            <!-- 1- projet  -->
+            <h1>Situation proposé</h1>
+            <h2>Réaliser un robot signalant la température.</h2>
+            <ul>
+                <li>Avance avec touche clavier si la température est inférieure à 25°C.</li>
+                <li>La couleur des LEDs RGWB sera un dégradé en fonction de la température 15°C Bleu 30°C Rouge. </li>
+            </ul>
+            <img src="img/visible_spectrum.jpg">
+        </section>
+        <section id="team">
+            <!-- 2- team -->
+            <h1>Groupe</h1>
+            <ul>
+                <li>
+                    <img src="img/joyer_romain.png">
+                    <h2>Joyer Romain</h2>
+                    <p class="sub">oMightty#0095</p>
+                </li>
+                <li>
+                    <img src="img/hure_romain.png">
+                    <h2>Huré Romain</h2>
+                    <p class="sub">♡ 𝑲𝒂𝒘𝒂𝒊𝒊 ♡#2894</p>
+                </li>
+                <li>
+                    <img src="img/guillemin_esteban.png">
+                    <h2>Guillemin Esteban</h2>
+                    <p class="sub">ShadowKliope#4868</p>
+                </li>
+                <li>
+                    <img src="img/herbert_alexandre.png">
+                    <h2>Herbert Alexandre</h2>
+                    <p class="sub">Foephoenix#9737</p>
+                </li>
+            </ul>
+        </section>
+        <section id="logo_rimains">
+            <!-- 3- logo_rimains -->
+        </section>
+        <section id="team_img">
+            <!-- 4- team_img -->
+        </section>
+        <section id="logo_microbit">
+            <!-- 5- logo_microbit -->
+        </section>
+        <section id="link">
+            <!-- 6- link -->
+            <h1>Lien</h1>
+            <a href="https://microbit-micropython.readthedocs.io/"  target="blank">
+                <h2>Librairie microbit python.</h2>
+            </a>
+        </section>
+        <section id="code_tkinter" onclick="select('code_tkinter')">
+            <!-- 7- code_tkinter -->
+            <h1>Code Tkinter</h1>
+            <pre><code class="language-python hljs">
+import serial, time
+from tkinter import *
+
+port = "COM4"
+baud = 115200
+s = serial.Serial(port)
+s.baudrate = baud
+
+bg_color = "#2f3136"
+f_text = ("arial", 20)
+
+
+def Avancer():
+s.write(bytes("Avancer", "utf-8"))
+
+def Reculer():
+s.write(bytes("Reculer", "utf-8"))
+
+def Droite():
+s.write(bytes("Droite", "utf-8"))
+
+def Gauche():
+s.write(bytes("Gauche", "utf-8"))
+
+def Stop():
+s.write(bytes("Stop", "utf-8"))
+
+# Fenêtre principale
+tk = Tk()
+tk.title("Microbit")
+tk.geometry("370x450")
+tk.configure(bg=bg_color)
+
+try:
+s.readline().decode('utf-8')
+print ("string is UTF-8, length %d bytes" % len(s.readline()))
+except UnicodeError:
+print ("string is not UTF-8")
+time.sleep(0.5)
+
+while True:
+data = str(s.readline(), 'UTF-8').replace('\r','').replace('\n','').split(' ')
+if data[0].isdigit():
+    break
+
+def loop():
+data_try = str(s.readline(), 'UTF-8').replace('\r','').replace('\n','').split(' ')
+if data_try[0].isdigit():
+    data = data_try
+    aff_temp = Label(tk, text=data[0], font=("arial", 70), bg=bg_color, fg=data[1]) # Crée le texte qui sera affiché dans la fenêtre
+    aff_temp.grid(row=1, column=2, padx=5, pady=5)
+
+tk.after(1000, loop)
+
+# Température
+aff_temp = Label(tk, text=data[0], font=("arial", 70), bg=bg_color, fg=data[1]) # Crée le texte qui sera affiché dans la fenêtre
+aff_temp.grid(row=1, column=2, padx=5, pady=5)
+
+# Création d'un bouton pour envoyer l'ordre avancer
+but_msg = Button(tk, text ="Avancer", font=f_text, bg=bg_color, command=Avancer)
+but_msg.grid(row=2, column=2, padx=5, pady=5)
+
+# Création d'un bouton pour envoyer l'ordre reculer
+but_msg = Button(tk, text ="Reculer", font=f_text, bg=bg_color, command=Reculer)
+but_msg.grid(row=4, column=2, padx=5, pady=5)
+
+# Création d'un bouton pour envoyer l'ordre droite
+but_msg = Button(tk, text ="Droite", font=f_text, bg=bg_color, command=Droite)
+but_msg.grid(row=3, column=3, padx=5, pady=5)
+
+# Création d'un bouton pour envoyer l'ordre gauche
+but_msg = Button(tk, text ="Gauche", font=f_text, bg=bg_color, command=Gauche)
+but_msg.grid(row=3, column=1, padx=5, pady=5)
+
+# Création d'un bouton pour envoyer l'ordre stop
+but_msg = Button(tk, text ="Stop", font=f_text, bg=bg_color, command=Stop)
+but_msg.grid(row=3, column=2, padx=5, pady=50)
+
+tk.after(1000, loop)
+tk.mainloop()
+            
+            </code></pre>
+        </section>
+        <section id="code_microbit" onclick="select('code_microbit')">
+            <!-- 8- code_microbit -->
+            <h1>Code Microbit</h1>
+            <h2>Code Robot</h2>
+            <pre><code class="language-python hljs">
+from microbit import *
+from maqueen import Maqueen
+import neopixel
+
+uart.init(baudrate=115200)
+
+np = neopixel.NeoPixel(pin15, 4)
+
+mq=Maqueen()
+mq.setVitesse(50)
+
+while True:
+if uart.any():
+
+    message = uart.read()
+
+    if message == b'keypressed' and temperature() < 25:
+        run = True
+
+        while run:
+            mq.avance()
+
+            message = uart.read()
+
+            if message == b'keyrelease' or temperature() > 25:
+                run = False
+
+else:  # arrêt
+    mq.stop()
+
+R = int((8.5*temperature()-127.5) * 2)
+B = 255 - R
+
+print(temperature(), '#%02x%02x%02x' % (R, 0, B))
+
+for led in range(4):
+    np[led] = (R, 0, B)
+
+np.show()
+
+            </code></pre>
+            <h2>Code Radio</h2>
+            <pre><code class="language-python hljs">
+from microbit import *
+import neopixel
+
+uart.init(baudrate=115200)
+np = neopixel.NeoPixel(pin15, 4)
+
+while True:
+    if uart.any():
+
+        message = uart.read()
+
+        if message == b'keypressed' and temperature() < 30:  # Remettre 25
+            run = True
+
+            while run:
+                i2c.write(0x10, bytearray([0x00, 0x0, 125]))
+                i2c.write(0x10, bytearray([0x02, 0x0, 125]))
+
+                message = uart.read()
+
+                if message == b'keyrelease' or temperature() > 30:  # Remettre 25
+                    run = False
+
+    else:
+        a=1 # arrêt
+        i2c.write(0x10, bytearray([0x00, 0x0, 0]))
+        i2c.write(0x10, bytearray([0x02, 0x0, 0]))
+
+    R = int((8.5*temperature()-127.5) * 2)
+    B = 255 - R
+
+    print(temperature(), '#%02x%02x%02x' % (R, 0, B))
+
+    for led in range(4):
+        np[led] = (R, 0, B)
+
+    np.show()
+    
+            </code></pre>
+        </section>
+        <section id="video">
+            <!-- 9- video -->
+            <video controls>
+                <source src="video/test.mp4" type="video/mp4">
+            </video>
+        </section>
+        
+    </section>
+</body>
